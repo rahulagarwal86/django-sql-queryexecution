@@ -1,0 +1,56 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify adminmedia %}
+
+{% block extrahead %}{{ block.super }}
+{% url admin:jsi18n as jsi18nurl %}
+<script type="text/javascript" src="{{ADMIN_PATH}}jsi18n/"></script>
+<script type="text/javascript" src= "{{ MEDIA_URL }}scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src= "{{ MEDIA_URL }}scripts/mainmenu.js"></script>
+<script type="text/javascript" src= "{{ MEDIA_URL }}scripts/file-handling.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/core.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+
+<script type="text/javascript" src="{% admin_media_prefix %}js/jquery.min.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/jquery.init.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/actions.min.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/SelectBox.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/SelectFilter2.js"></script>
+
+{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />{% endblock %}
+
+{% block content %}
+<h1>SQL Result</h1>
+<div id="content-main">
+        <div>
+    <fieldset class="module aligned ">
+    <h2>Result</h2>
+    <h1>{{rows_effected}} Rows Effected</h1>
+    {% if data|length > 0 %}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                <b>SQL Query:</b>&nbsp;{{sql}}
+                </th>
+                <td>&nbsp;</td>
+            </tr>
+            <tr><br></tr>
+        </thead>
+        
+    <tbody>
+    {% for row in data %}
+    <tr  class="{% cycle 'row1' 'row2' %}">
+    {% for each in row%}
+    <td>
+        {{each}}
+    </td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody></table>
+    {% endif %}
+    </fieldset>
+    </div>
+    </div>
+{% endblock %}

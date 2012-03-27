@@ -1,0 +1,70 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify adminmedia %}
+
+{% block extrahead %}{{ block.super }}
+{% url admin:jsi18n as jsi18nurl %}
+<script type="text/javascript" src="{{ADMIN_PATH}}jsi18n/"></script>
+<script type="text/javascript" src= "{{ MEDIA_URL }}scripts/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src= "{{ MEDIA_URL }}scripts/mainmenu.js"></script>
+<script type="text/javascript" src= "{{ MEDIA_URL }}scripts/file-handling.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/core.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+
+<script type="text/javascript" src="{% admin_media_prefix %}js/jquery.min.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/jquery.init.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/actions.min.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/SelectBox.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/SelectFilter2.js"></script>
+<script type="text/javascript">
+function validate_sql()
+{
+    var sqlID = document.sql_form.id_sqlquery;
+    var sql_val = sqlID.value
+    var last_char = sql_val[sql_val.length-1]
+    var status = true;
+    if (sql_val == '')
+    {
+        sql_val.className = "errorlist";
+        document.getElementById("err_sql").className = "errorlist";
+        document.getElementById("err_sql").innerHTML = "Please write sql query";
+        status = false;
+    }
+    else if (last_char != ';')
+    {
+        sql_val.className = "errorlist";
+        document.getElementById("err_sql").className = "errorlist";
+        document.getElementById("err_sql").innerHTML = "Please terminate query with ';'";
+        status = false;
+    }
+    return status;
+}
+</script>
+{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />{% endblock %}
+
+{% block content %}
+<h1>SQL Execution System</h1>
+<div id="content-main">
+    <form action="{% url execute_sql %}"  method="post" name="sql_form" onsubmit="return validate_sql();" >{% csrf_token %}
+    <div>
+    <fieldset class="module aligned ">
+    <h2>Execute Raw SQL Query</h2>
+    <ul class="errorlist" id="err_sql"></ul>
+
+    <div class="form-row">
+        <div>
+                    
+        <label class="required">SQL Query:</label>                
+        <textarea class="vLargeTextField" name="id_sqlquery" cols="40" rows="10" id="id_sqlquery" value=""></textarea>           
+        </div>
+        </div>
+        <div class="submit-row" >
+    <input type="submit" value="Execute"  class="default" >
+    </div>
+    </fieldset>
+    </div>
+    </form>
+    <div>
+   
+</div>
+{% endblock %}
